@@ -45,8 +45,7 @@ the lesson. The initial version of World of Zuul has been provided in your
 [src](src) directory.
 
 After you have finished improving the game, choose **two or more** features
-listed below to implement. **Please indicate via a README.md in your project
-which tasks you have attempted implemented**.
+listed below to implement.
 
 #### Exercise 6.41 (8.41)
 Add some form of time limit to your game. If a certain task is not completed in
