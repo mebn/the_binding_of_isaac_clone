@@ -19,7 +19,7 @@ section. Once you have completed your own game, you must extend it by
 implementing two or more of the features listed in the exercises under
 [Extending World of Zuul](#extending-world-of-zuul).
 
-Additionally, you will properly document your code with JavaDoc style comments,
+Additionally, you will properly document your code with Javadoc style comments,
 according to the instructions in [Documenting your code](#documenting-your-code).
 
 ### Base Game
@@ -96,26 +96,30 @@ player types a command, these characters can move into an adjoining room.
 ### Documenting your code
 
 #### Exercise 6.XX
-Using JavaDoc, write the class documentation for RandomTester class. First,
+Using Javadoc, write the class documentation for __all__  of your classes. First,
 briefly review the **Format of a Doc Comment** and **Example of Doc Comments**
 sections from the [official documentation](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html)
-on JavaDoc from Oracle. Then within the RandomTester class, you must attempt to
-include the minimum JavaDoc requirements listed here:
+on Javadoc from Oracle and read 5.10 (6.11) in the book. Then go through your
+classes and add Javadoc according to the requirements below.
 
-The documentation of a class should at least include:
-* the class name
+**The documentation of a class should at least include:**
 * a comment describing the overall purpose and characteristics of the class
-* a version number
-* the author’s name (or authors’ names)
-* documentation for each constructor and each method
+* a version number (use `@version`)
+* the author’s name (or authors’ names) (use `@author`)
+* documentation for each `public` constructor and method. Methods/constructors
+  with other visibility (`protected`, `private`, `package private`) are in
+  general only Javadoced if they are complex and require an explanation, or
+  part of some larger machinery that is not obvious.
 
-The documentation for each constructor and method should include:
-* the name of the method
-* the return type
-* the parameter names and types
+**The documentation for each constructor and method should include:**
 * a description of the purpose and function of the method
-* a description of each parameter
-* a description of the value returned
+* name and description of each parameter (use `@param`)
+* a description of the value returned (use `@return`). Note that this is not
+  applicable to constructors and `void` methods.
+* getters and setters are in general trivial, but the field they correspond to
+  may not be. it is reasonable to describe the purpose of the field, rather
+  than what the method does (because it should in most cases be magnificently
+  obvious).
 
 Good Javadoc will become a **minimum requirement** in documentation of future
 assignments where you have created your own class, so absolute care must be
