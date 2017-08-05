@@ -75,3 +75,33 @@ if you give them the right item.
 #### Exercise 6.48
 Add moving characters. These are like other characters, but every time the
 player types a command, these characters can move into an adjoining room.
+
+### Documenting your code
+
+#### Exercise 6.XX
+Using JavaDoc, write the class documentation for RandomTester class. First,
+briefly review the **Format of a Doc Comment** and **Example of Doc Comments**
+sections from the [official documentation](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html)
+on JavaDoc from Oracle. Then within the RandomTester class, you must attempt to
+include the minimum JavaDoc requirements listed here:
+
+The documentation of a class should at least include:
+* the class name
+* a comment describing the overall purpose and characteristics of the class
+* a version number
+* the author’s name (or authors’ names)
+* documentation for each constructor and each method
+
+The documentation for each constructor and method should include:
+* the name of the method
+* the return type
+* the parameter names and types
+* a description of the purpose and function of the method
+* a description of each parameter
+* a description of the value returned
+
+Good Javadoc will become a **minimum requirement** in documentation of future
+assignments where you have created your own class, so absolute care must be
+taken to understand correct style of documentation.  Otherwise, you may be
+asked to **resubmit work if the documentation is of a poor standard**.
+
