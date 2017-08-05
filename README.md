@@ -25,11 +25,12 @@ according to the instructions in [Documenting your code](#documenting-your-code)
 ### Base Game
 For the base game to be accepted, the following requirements must be met:
 
-* There must be a map of your game world in the repo. You can use e.g.
-  [draw.io](https://www.draw.io) for this, if you wish.
+* There must be a map of your game world in the [docs](docs) directory. You can
+  use e.g. [draw.io](https://www.draw.io) for this, if you wish.
 * Your game must have a _beginning_ and an _end_. That is to say, there must be
   one or more things the player can do that causes the game loop to exit.
-* There must be a `README.md` in your repo that contains the following:
+* You must add the following information to the
+  [docs/README.md](docs/README.md) directory:
     - A description of the theme of your game.
     - How to win/lose.
     - Which of the features from [Extending World of Zuul](#extending-world-of-zuul)
