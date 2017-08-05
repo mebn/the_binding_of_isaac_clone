@@ -120,6 +120,8 @@ classes and add Javadoc according to the requirements below.
   may not be. it is reasonable to describe the purpose of the field, rather
   than what the method does (because it should in most cases be magnificently
   obvious).
+* **Note:** The types of parameters and return values should **not** be written
+  in the Javadoc, as these are already in the method/constructor header!
 
 **For examples of good Javadoc, see the files you have been provided in
 the [src](src) directory**
