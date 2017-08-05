@@ -6,27 +6,44 @@ For instructions on how to do and submit the assignment, please see the
 [assignments section of the course instructions](https://gits-15.sys.kth.se/inda-17/course-instructions#assignments).
 
 ### Homework
-Study all sections from chapter 6 from the course textbook and be prepared to
-answer any of the exercises.
+
+* **5th ed:** Study all of chapter 6, and 5.10.
+* **6th ed:** Study all of chapter 8, and 6.11.
 
 ### Github Task:
 This week, you shall be submitting a full game. If you have done the homework
 above, you will have got most of the code from working through each section and
 exercise. It is important you read the code provided and understand why it was
-improved. Once you have completed your own game, you must extend it by
-implementing one or more of the features suggested in Exercise 6.41 - 6.48.
-Please indicate in a README.md file the theme of your game and which extensions
-you made.
+improved. A few requirements on your game are listed in the [Base Game](#base-game)
+section. Once you have completed your own game, you must extend it by
+implementing two or more of the features listed in the exercises under
+[Extending World of Zuul](#extending-world-of-zuul).
+
+Additionally, you will properly document your code with JavaDoc style comments,
+according to the instructions in [Documenting your code](#documenting-your-code).
+
+### Base Game
+For the base game to be accepted, the following requirements must be met:
+
+* There must be a map of your game world in the repo. You can use e.g.
+  [draw.io](https://www.draw.io) for this, if you wish.
+* Your game must have a _beginning_ and an _end_. That is to say, there must be
+  one or more things the player can do that causes the game loop to exit.
+* There must be a `README.md` in your repo that contains the following:
+    - A description of the theme of your game.
+    - How to win/lose.
+    - Which of the features from [Extending World of Zuul](#extending-world-of-zuul)
+      you implemented and where they can be found in the game.
 
 ### Extending World of Zuul
-As indicated in Chapter 6, Exercise 6.3, you must customise the theme of the
-game to your own design, but keep the same general format and reuse the code
-provided.  It is strongly advised to work through the chapter as key lessons
-are presented throughout, and the code is given to you to illustrate the
-lesson.  The initial version of World of Zuul has been provided in your /src
-directory.
+As indicated in Chapter 6 (8), Exercise 6.3 (8.3), you must customise the theme
+of the game to your own design, but keep the same general format and reuse the
+code provided. It is strongly advised to work through the chapter as key
+lessons are presented throughout, and the code is given to you to illustrate
+the lesson. The initial version of World of Zuul has been provided in your
+[src](src) directory.
 
-After you have finished improving the game, choose **one or more** features
+After you have finished improving the game, choose **two or more** features
 listed below to implement. **Please indicate via a README.md in your project
 which tasks you have attempted implemented**.
 
