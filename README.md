@@ -121,6 +121,9 @@ classes and add Javadoc according to the requirements below.
   than what the method does (because it should in most cases be magnificently
   obvious).
 
+**For examples of good Javadoc, see the files you have been provided in
+the [src](src) directory**
+
 Good Javadoc will become a **minimum requirement** in documentation of future
 assignments where you have created your own class, so absolute care must be
 taken to understand correct style of documentation.  Otherwise, you may be
