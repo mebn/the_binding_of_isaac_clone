@@ -30,7 +30,7 @@ For the base game to be accepted, the following requirements must be met:
 * Your game must have a _beginning_ and an _end_. That is to say, there must be
   one or more things the player can do that causes the game loop to exit.
 * You must add the following information to the
-  [docs/README.md](docs/README.md) directory:
+  [docs/README.md](docs/README.md) file:
     - A description of the theme of your game.
     - How to win/lose.
     - Which of the features from [Extending World of Zuul](#extending-world-of-zuul)
