@@ -1,9 +1,9 @@
 ### Deadline
-This work should be completed before **Friday 10th November**.
+This work should be completed before **Friday 9th November**.
 
 ### Instructions
 For instructions on how to do and submit the assignment, please see the
-[assignments section of the course instructions](https://gits-15.sys.kth.se/inda-17/course-instructions#assignments).
+[assignments section of the course instructions](https://gits-15.sys.kth.se/inda-18/course-instructions#assignments).
 
 ### Homework
 
@@ -130,3 +130,6 @@ Good Javadoc will become a **minimum requirement** in documentation of future
 assignments where you have created your own class, so absolute care must be
 taken to understand correct style of documentation.  Otherwise, you may be
 asked to **resubmit work if the documentation is of a poor standard**.
+
+### Grading Criteria
+Each week we will communicate grading criteria through the [issue tracker](../../issues/). Grading criteria set the basic standards for a pass, komp or fail, so it is essential you review them each week. These will change over time as your skills develop, so make sure you read the grading criteria issue carefully and tick off all the requirements.
