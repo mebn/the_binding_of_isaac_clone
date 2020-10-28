@@ -20,7 +20,7 @@ terminal. Read the source code and create a valid data file `scores.txt` that
 the program can process. Pay attention to how each line is split in order to
 work out the correct format. The data file should contain 5 entries or more.
 
-Exercise IO.2 (use - `highscore`)
+#### Exercise IO.2 (use - `highscore`)
 
 Modify the program so that it also can read the country of the player. Modify
 your data file to include this extra field. Test that it still prints out all
