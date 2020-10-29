@@ -21,6 +21,6 @@ public class HighScore {
     }
 
     public static void main(String[] args) {
-        printHighScore("scores.txt");
+        printHighScores("scores.txt");
     }
 }
