@@ -97,7 +97,7 @@ Make sure that your game has a goal (so that it has an end and the player can
 magic items, characters that help you only if you feed them, time limits...
 whatever you like). Let your imagination run wild.
 
-### Base Game
+### Base Game  (use - `game`)
 For the base game to be accepted, the following requirements must be met:
 
 * The game theme must be different from World of Zuul
@@ -115,7 +115,7 @@ For the base game to be accepted, the following requirements must be met:
 
 ### Loading a World Model from File
 
-#### Exercise IO.4
+#### Exercise IO.4  (use - `game`)
 
 Having completed the earlier IO exercises, you should be able to see the
 potential for storing world models for your game as a text file and creating
@@ -171,40 +171,38 @@ Remember to include a sample world model file in the repo.
 > applied to the original version as all the Room variables were local to the
 > createRooms method...
 
-### Extending World of Zuul
+### Extending World of Zuul (use - `highscore`)
 After you have finished improving your game, choose **one or more** features
 listed below to implement.
 
-#### Option 1 - Exercise 6.41 (8.41)
+#### Option 1
 Add some form of time limit to your game. If a certain task is not completed in
 a specified time, the player loses. A time limit can easily be implemented by
 counting the number of moves or the number of entered commands. You do not need
 to use real time.
 
-#### Option 2 - Exercise 6.42 (8.42)
+#### Option 2
 Implement a trapdoor somewhere (or some other form of door that you can only
 cross one way).
 
-#### Option 3 - Exercise 6.43 (8.43)
+#### Option 3
 Add a beamer to the game. A beamer is a device that can be charged and fired.
 When you charge the beamer, it memorizes the current room. When you fire the
 beamer, it transports you immediately back to the room it was charged in. The
 beamer could either be standard equipment or an item that the player can find.
 Of course, you need commands to charge and fire the beamer.
 
-#### Option 4 - Exercise 6.44 (8.44)
+#### Option 4
 Add locked doors to your game. The player needs to find (or otherwise obtain) a
 key to open a door.
 
-#### Option 5 - Exercise 6.45 (8.45)
+#### Option 5
 Add a transporter room. Whenever the player enters this room, he/she is
 randomly transported into one of the other rooms. Note: Coming up with a good
 design for this task is not trivial. It might be interesting to discuss design
-alternatives for this with other students. (We discuss design alternatives for
-this task at the end of Chapter 9. The adventurous or advanced reader may want
-to skip ahead and have a look.)
+alternatives for this with other students.
 
-#### Option 6 - Exercise 6.46 (8.46)
+#### Option 6
 In the processCommand method in Game, there is a switch statement (or a
 sequence of if statements) to dispatch commands when a command word is
 recognized. This is not a very nice design, because every time we add a
@@ -212,12 +210,12 @@ command, we have to add a case here. Can you improve this design? Design the
 classes so that handling of commands is more modular and new commands can be
 added more easily. Implement it. Test it.
 
-#### Option 7 - Exercise 6.47 (8.47)
+#### Option 7
 Add characters to the game. Characters are similar to items, but they can talk.
 They speak some text when you first meet them, and they may give you some help
 if you give them the right item.
 
-#### Option 8 - Exercise 6.48 (8.48)
+#### Option 8
 Add moving characters. These are like other characters, but every time the
 player types a command, these characters can move into an adjoining room.
 
@@ -225,9 +223,10 @@ player types a command, these characters can move into an adjoining room.
 
 #### Exercise 6.XX
 
-Using Javadoc, write the class documentation for __all__  of your classes.
-First, briefly review the **Format of a Doc Comment** and **Example of Doc
-Comments** sections from the [official
+Using Javadoc, write the class documentation for __all__  of your classes (for
+example the `highscore` project has no docs! fix it). First, briefly review the
+**Format of a Doc Comment** and **Example of Doc Comments** sections from the
+[official
 documentation](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html)
 on Javadoc from Oracle. Then go through your classes and add Javadoc according
 to the requirements below.
