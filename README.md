@@ -171,7 +171,7 @@ Remember to include a sample world model file in the repo.
 > applied to the original version as all the Room variables were local to the
 > createRooms method...
 
-### Extending World of Zuul (use - `highscore`)
+### Extending World of Zuul (use - `game`)
 After you have finished improving your game, choose **one or more** features
 listed below to implement.
 
