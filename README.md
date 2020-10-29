@@ -37,7 +37,10 @@ your program to make use of the `Player` class. You should create an empty
 `ArrayList<Player>`, read the player data from file, and create Player objects
 for each line of data. Add each Player object to the ArrayList.
 
->> Assistants Note: One challenge we face is that numbers in our data file are read as String objects. However Player expects the score to be of type `int`. If we need to convert the String "10" to the int 10, we can use the following: Integer.parseInt("10")
+> Assistants Note: One challenge we face is that numbers in our data file are
+> read as String objects. However Player expects the score to be of type `int`.
+> If we need to convert the String "10" to the int 10, we can use the following:
+> Integer.parseInt("10")
 
 After the collection of players has been created, iterate over this collection
 using a for each loop and print out the high scores. Note a `toString()` method
@@ -170,9 +173,13 @@ void createRoomsFromFile(String filename) {
     // create a HashMap<String, Room> worldModel to store the game world as it is read from file
 
     // while there are more lines in the file, read line
-        // if the line starts with "Room" then extract the Name and Description and create a Room instance and add it to the HashMap, using Name as the key
-        // else if the line starts with "Exit" assume the necessary rooms exist in the HashMap and use the setExit() method
-        // hint: this requires us to acces the HashMap twice like: worldmodel.get()"Name1").setExit("East", worldmodel.get("Name2"));
+        // if line starts with "Room" then extract the Name and Description and create a Room instance and 
+        // add it to the HashMap, using Name as the key
+
+        // else if the line starts with "Exit" assume the necessary rooms exist in the HashMap and
+        // use the setExit() method
+        // hint: this requires us to acces the HashMap twice like:
+        // worldModel.get("Name1").setExit("East", worldmodel.get("Name2"));
 
     // remember to set the currentRoom to the starting room as the final step
 }
