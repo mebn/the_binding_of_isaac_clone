@@ -69,6 +69,16 @@ this model from an input file, and extend your game with some suggested
 features. Finally you should ensure that your code is well documented using
 JavaDoc.
 
+We have added a main method to the `Game` class so you can run it outside of
+BlueJ. To run the game, compile the all the classes and execute the Game class:
+
+```
+$ javac *.java
+$ java Game
+```
+
+Or use your favorite IDE :-)
+
 #### Exercise 6.3
 
 Design your own game scenario. Do this away from the computer. Do not think
