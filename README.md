@@ -43,9 +43,6 @@ After the collection of players has been created, iterate over this collection
 using a for each loop and print out the high scores. Note a `toString()` method
 for player exists so you can take advantage of that to create the output.
 
-#### Exercise IO.4 (use - `highscore`) - optional!
-Rewrite the IO code using java.nio instead of java.io :)
-
 ### Github Task:
 This week, you shall be submitting a full game. If you have done the homework
 above, you will have got most of the code from working through each section and
