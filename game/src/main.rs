@@ -10,11 +10,13 @@ use ggez::audio::{SoundSource, Source};
 
 mod window;
 mod player;
+mod bullet;
 
 // This struct handles all the
 // players and objects in the game.
 struct MyGame {
-	player1: player::Player
+	player1: player::Player,
+	bullets: Vec<bullet::Bullet>
 }
 
 impl MyGame {
@@ -28,11 +30,13 @@ impl MyGame {
 			width: 50.0,
 			height: 50.0,
 			speed: 10.0,
+			is_shooting: false,
 			sound: space_sound
 		};
 
         MyGame {
-			player1
+			player1,
+			bullets: Vec::new()
 		}
     }
 }
@@ -41,9 +45,26 @@ impl EventHandler for MyGame {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
 		// Handle keypresses and movement.
 		self.player1.movement(ctx, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-		if is_key_pressed(ctx, event::KeyCode::Space) {
-			// self.player1.sound.play()?;
-			self.player1.shoot(ctx);
+
+		for bull in &mut self.bullets {
+			bull.x_pos += bull.speed;
+		}
+
+		self.bullets.retain(|b| b.x_pos < window::WIDTH);
+
+		if self.player1.is_shooting {
+			// create a new Bullet and to MyGame.bullet.
+			let new_bullet = bullet::Bullet {
+				x_pos: self.player1.x_pos,
+				y_pos: self.player1.y_pos,
+				width: 30.0,
+				height: 15.0,
+				speed: 30.0,
+				life: 1.0
+			};
+
+			self.bullets.push(new_bullet);
+			// play "fire" sound
 		}
 
 		Ok(())
@@ -51,11 +72,27 @@ impl EventHandler for MyGame {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, graphics::BLACK);
-		
-		// Draws a rectangle on the screen.
 		self.player1.rect(ctx)?;
 
+		// bullets
+		for bull in &self.bullets {
+			bull.draw(ctx)?;
+		}
+
         graphics::present(ctx)
+	}
+	
+	// fire
+	fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymod: keyboard::KeyMods, _repeat: bool) {
+		if let KeyCode::Space = keycode {
+			self.player1.is_shooting = true;
+		}
+    }
+
+    fn key_up_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymod: keyboard::KeyMods) {
+        if let KeyCode::Space = keycode {
+			self.player1.is_shooting = false;
+		}
     }
 }
 

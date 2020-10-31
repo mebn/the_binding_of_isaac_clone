@@ -9,6 +9,7 @@ pub struct Player {
     pub width: f32,
     pub height: f32,
 	pub speed: f32,
+	pub is_shooting: bool,
 	pub sound: Source
 }
 
@@ -34,20 +35,5 @@ impl Player {
 		if is_key_pressed(ctx, down) {
 			self.y_pos += self.speed;
 		}
-    }
-
-    pub fn shoot(&self, ctx: &mut Context) {
-        // for loop to move the bullet.
-        let mut x = self.x_pos;
-        let y = self.y_pos;
-
-        for _ in 0..10 {
-            let rect = graphics::Rect::new(x, y, 10.0, 10.0);
-            let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE).unwrap();
-            graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default()).unwrap();
-            graphics::present(ctx).unwrap();
-
-            x += 20.0;
-        }
     }
 }
