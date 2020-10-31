@@ -1,32 +1,37 @@
 // ggez docs: https://docs.rs/ggez/0.5.1/ggez/
+// Help from: https://github.com/AndrewJakubowicz/ggezFlappyCrabby
 
-
-
-// PROBLEMS:
-// resoureces not working correctly.
-
-
-use ggez::{Context, ContextBuilder, GameResult};
+use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler};
 use ggez::graphics;
 use ggez::input::keyboard;
 use ggez::audio::{SoundSource, Source};
-use ggez::conf;
 
-use std::env;
-use std::path;
+mod window;
+mod player;
 
+// This struct handles all the
+// players and objects in the game.
 struct MyGame {
-	x_pos: f32,
-	y_pos: f32
+	player1: player::Player
 }
 
 impl MyGame {
     pub fn new(_ctx: &mut Context) -> MyGame {
-        // Load/create resources here: images, fonts, sounds, etc.
-        MyGame {
+		// Load/create resources here: images, fonts, sounds, etc.
+		let space_sound: Source = Source::new(_ctx, "/coin.wav").unwrap();
+
+		let player1 = player::Player {
 			x_pos: 100.0,
-			y_pos: 100.0
+			y_pos: 100.0,
+			width: 50.0,
+			height: 50.0,
+			speed: 10.0,
+			sound: space_sound
+		};
+
+        MyGame {
+			player1
 		}
     }
 }
@@ -34,15 +39,22 @@ impl MyGame {
 impl EventHandler for MyGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
 		// Handle keypresses and movement.
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::D) { self.x_pos += 10.0; }
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::A) { self.x_pos -= 10.0; }
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::W) { self.y_pos -= 10.0; }
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::S) { self.y_pos += 10.0; }
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::F) {
-			// Play sound.
-			let mut space_sound: Source = Source::new(_ctx, "/coin.wav")?;
-			space_sound.play()?;
+		if keyboard::is_key_pressed(_ctx, event::KeyCode::D) {
+			self.player1.x_pos += self.player1.speed;
 		}
+		if keyboard::is_key_pressed(_ctx, event::KeyCode::A) {
+			self.player1.x_pos -= self.player1.speed;
+		}
+		if keyboard::is_key_pressed(_ctx, event::KeyCode::W) {
+			self.player1.y_pos -= self.player1.speed;
+		}
+		if keyboard::is_key_pressed(_ctx, event::KeyCode::S) {
+			self.player1.y_pos += self.player1.speed;
+		}
+		if keyboard::is_key_pressed(_ctx, event::KeyCode::Space) {
+			self.player1.sound.play()?;
+		}
+
 		Ok(())
     }
 
@@ -50,30 +62,14 @@ impl EventHandler for MyGame {
         graphics::clear(ctx, graphics::BLACK);
 		
 		// Draws a rectangle on the screen.
-		let rect = graphics::Rect::new(self.x_pos, self.y_pos, 50.0, 50.0);
-		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE)?;
-		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default())?;
+		self.player1.rect(ctx)?;
 
         graphics::present(ctx)
     }
 }
 
 fn main() {
-	let resource_dir = if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {
-        let mut path = path::PathBuf::from(manifest_dir);
-        path.push("resources");
-        path
-    } else {
-        path::PathBuf::from("./resources")
-	};
-	
-	let (mut ctx, mut event_loop) = ContextBuilder::new("game_0", "nilsen")
-		.window_setup(conf::WindowSetup::default().title("My Game!"))
-		.window_mode(conf::WindowMode::default().dimensions(600.0, 600.0))
-		.add_resource_path(resource_dir)
-		.build()
-		.unwrap();
-
+	let (mut ctx, mut event_loop) = window::build_window();
 	let mut my_game = MyGame::new(&mut ctx);
 
     // Run!
