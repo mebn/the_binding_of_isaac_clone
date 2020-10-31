@@ -1,9 +1,12 @@
 use ggez::{Context, ContextBuilder};
 use ggez::conf;
-use ggez:: event;
+use ggez::event;
 
 use std::env;
 use std::path;
+
+pub const WIDTH: f32 = 1024.0;
+pub const HEIGHT: f32 = 720.0;
 
 pub fn build_window() -> (Context, event::EventsLoop) {
     // Handle resource path.
@@ -18,7 +21,7 @@ pub fn build_window() -> (Context, event::EventsLoop) {
     // Settings about the window.
 	let cb = ContextBuilder::new("game_0", "nilsen")
 		.window_setup(conf::WindowSetup::default().title("My Game!"))
-		.window_mode(conf::WindowMode::default().dimensions(600.0, 600.0))
+		.window_mode(conf::WindowMode::default().dimensions(WIDTH, HEIGHT))
         .add_resource_path(resource_dir)
         .build()
         .unwrap();
