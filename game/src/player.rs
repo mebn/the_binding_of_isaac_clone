@@ -1,6 +1,7 @@
 use ggez::{Context, GameResult};
 use ggez::graphics;
 use ggez::audio::{Source};
+use ggez::input::keyboard::{KeyCode, is_key_pressed};
 
 pub struct Player {
 	pub x_pos: f32,
@@ -17,5 +18,20 @@ impl Player {
 		let rect = graphics::Rect::new(self.x_pos, self.y_pos, self.width, self.height);
 		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE)?;
 		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default())
-	}
+    }
+    
+    pub fn movement(&mut self, ctx: &mut Context, up: KeyCode, down: KeyCode, left: KeyCode, right: KeyCode) {
+        if is_key_pressed(ctx, right) {
+			self.x_pos += self.speed;
+		}
+		if is_key_pressed(ctx, left) {
+			self.x_pos -= self.speed;
+		}
+		if is_key_pressed(ctx, up) {
+			self.y_pos -= self.speed;
+		}
+		if is_key_pressed(ctx, down) {
+			self.y_pos += self.speed;
+		}
+    }
 }

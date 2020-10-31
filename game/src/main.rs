@@ -4,7 +4,7 @@
 use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler};
 use ggez::graphics;
-use ggez::input::keyboard;
+use ggez::input::keyboard::{KeyCode, is_key_pressed};
 use ggez::audio::{SoundSource, Source};
 
 mod window;
@@ -39,19 +39,8 @@ impl MyGame {
 impl EventHandler for MyGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
 		// Handle keypresses and movement.
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::D) {
-			self.player1.x_pos += self.player1.speed;
-		}
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::A) {
-			self.player1.x_pos -= self.player1.speed;
-		}
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::W) {
-			self.player1.y_pos -= self.player1.speed;
-		}
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::S) {
-			self.player1.y_pos += self.player1.speed;
-		}
-		if keyboard::is_key_pressed(_ctx, event::KeyCode::Space) {
+		self.player1.movement(_ctx, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
+		if is_key_pressed(_ctx, event::KeyCode::Space) {
 			self.player1.sound.play()?;
 		}
 
