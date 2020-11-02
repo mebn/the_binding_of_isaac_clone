@@ -6,7 +6,9 @@ use ggez::event::{self, EventHandler};
 use ggez::graphics;
 use ggez::input::keyboard::{KeyCode, is_key_pressed};
 use ggez::input::keyboard;
-use ggez::audio::{SoundSource, Source};
+use ggez::audio::{Source};
+
+use ggez::timer;
 
 mod window;
 mod player;
@@ -30,7 +32,7 @@ impl MyGame {
 			width: 50.0,
 			height: 50.0,
 			speed: 10.0,
-			is_shooting: false,
+			fire_speed: 0.5, // half a sec.
 			sound: space_sound
 		};
 
@@ -43,28 +45,38 @@ impl MyGame {
 
 impl EventHandler for MyGame {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
-		// Handle keypresses and movement.
-		self.player1.movement(ctx, KeyCode::W, KeyCode::S, KeyCode::A, KeyCode::D);
-
-		for bull in &mut self.bullets {
-			bull.x_pos += bull.speed;
+		// Handle cooldown when shooting bullets.
+		const DESIRED_FPS: u32 = 60;
+		while timer::check_update_time(ctx, DESIRED_FPS) {
+			let seconds = 1.0 / (DESIRED_FPS as f32);
+			self.player1.fire_speed -= seconds;
 		}
 
-		self.bullets.retain(|b| b.x_pos < window::WIDTH);
+		// Handle movement for player1.
+		self.player1.movement(ctx);
+		self.player1.no_wall_hax(window::WIDTH, window::HEIGHT);
 
-		if self.player1.is_shooting {
-			// create a new Bullet and to MyGame.bullet.
-			let new_bullet = bullet::Bullet {
-				x_pos: self.player1.x_pos,
-				y_pos: self.player1.y_pos,
-				width: 30.0,
-				height: 15.0,
-				speed: 30.0,
-				life: 1.0
-			};
-
+		// Moves the bullet.
+		bullet::move_bullet(&mut self.bullets);
+		// Removes bullets outside of window.
+		bullet::remove_old_bullets(&mut self.bullets, window::WIDTH, window::HEIGHT);
+		// Creates a new bullet on correct keypress.
+		if is_key_pressed(ctx, keyboard::KeyCode::Right) && self.player1.fire_speed < 0.0 {
+			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Right);
 			self.bullets.push(new_bullet);
-			// play "fire" sound
+			self.player1.fire_speed = 0.5;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Left) && self.player1.fire_speed < 0.0 {
+			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Left);
+			self.bullets.push(new_bullet);
+			self.player1.fire_speed = 0.5;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Up) && self.player1.fire_speed < 0.0 {
+			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Up);
+			self.bullets.push(new_bullet);
+			self.player1.fire_speed = 0.5;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Down) && self.player1.fire_speed < 0.0 {
+			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Down);
+			self.bullets.push(new_bullet);
+			self.player1.fire_speed = 0.5;
 		}
 
 		Ok(())
@@ -74,26 +86,13 @@ impl EventHandler for MyGame {
         graphics::clear(ctx, graphics::BLACK);
 		self.player1.rect(ctx)?;
 
-		// bullets
+		// Draw bullets.
 		for bull in &self.bullets {
 			bull.draw(ctx)?;
 		}
 
         graphics::present(ctx)
 	}
-	
-	// fire
-	fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymod: keyboard::KeyMods, _repeat: bool) {
-		if let KeyCode::Space = keycode {
-			self.player1.is_shooting = true;
-		}
-    }
-
-    fn key_up_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymod: keyboard::KeyMods) {
-        if let KeyCode::Space = keycode {
-			self.player1.is_shooting = false;
-		}
-    }
 }
 
 fn main() {

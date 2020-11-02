@@ -9,7 +9,7 @@ pub struct Player {
     pub width: f32,
     pub height: f32,
 	pub speed: f32,
-	pub is_shooting: bool,
+	pub fire_speed: f32,
 	pub sound: Source
 }
 
@@ -22,18 +22,25 @@ impl Player {
     }
     
     // Binds keypressess to movement.
-    pub fn movement(&mut self, ctx: &mut Context, up: KeyCode, down: KeyCode, left: KeyCode, right: KeyCode) {
-        if is_key_pressed(ctx, right) {
+    pub fn movement(&mut self, ctx: &Context) {
+        if is_key_pressed(ctx, KeyCode::D) {
 			self.x_pos += self.speed;
 		}
-		if is_key_pressed(ctx, left) {
+		if is_key_pressed(ctx, KeyCode::A) {
 			self.x_pos -= self.speed;
 		}
-		if is_key_pressed(ctx, up) {
+		if is_key_pressed(ctx, KeyCode::W) {
 			self.y_pos -= self.speed;
 		}
-		if is_key_pressed(ctx, down) {
+		if is_key_pressed(ctx, KeyCode::S) {
 			self.y_pos += self.speed;
 		}
-    }
+	}
+	
+	pub fn no_wall_hax(&mut self, width: f32, height: f32) {
+		if self.x_pos > width - self.width { self.x_pos = width - self.width; }
+		if self.x_pos < 0.0 { self.x_pos = 0.0; }
+		if self.y_pos > height - self.height { self.y_pos = height - self.height; }
+		if self.y_pos < 0.0 { self.y_pos = 0.0; }
+	}
 }
