@@ -10,7 +10,6 @@ pub struct Player {
     pub height: f32,
 	pub speed: f32,
 	pub fire_speed: f32,
-	pub sound: Source
 }
 
 impl Player {

@@ -13,34 +13,46 @@ use ggez::timer;
 mod window;
 mod player;
 mod bullet;
+mod enemy;
+
+struct Assets {
+	shooting: Source
+}
 
 // This struct handles all the
 // players and objects in the game.
 struct MyGame {
 	player1: player::Player,
-	bullets: Vec<bullet::Bullet>
+	bullets: Vec<bullet::Bullet>,
+	enemies: Vec<enemy::Enemy>,
+	assets: Assets
 }
 
 impl MyGame {
     pub fn new(_ctx: &mut Context) -> MyGame {
 		// Load/create resources here: images, fonts, sounds, etc.
-		let space_sound: Source = Source::new(_ctx, "/coin.wav").unwrap();
+		let assets = Assets {
+			shooting: Source::new(_ctx, "/pew.wav").unwrap()
+		};
 
+		let x_pos = 100.0;
+		let y_pos = 100.0;
 		let player1 = player::Player {
-			x_pos: 100.0,
-			y_pos: 100.0,
-			width: 50.0,
-			height: 50.0,
-			speed: 10.0,
+			x_pos,
+			y_pos,
+			width: 25.0,
+			height: 25.0,
+			speed: 7.0,
 			fire_speed: 0.5, // half a sec.
-			sound: space_sound
 		};
 
         MyGame {
 			player1,
-			bullets: Vec::new()
+			bullets: Vec::new(),
+			enemies: enemy::spawn_enemies(5, window::WIDTH, window::HEIGHT, x_pos, y_pos),
+			assets
 		}
-    }
+	}
 }
 
 impl EventHandler for MyGame {
@@ -79,6 +91,34 @@ impl EventHandler for MyGame {
 			self.player1.fire_speed = 0.5;
 		}
 
+		// remove dead eneemies.
+		enemy::remove_the_dead(&mut self.enemies);
+
+		// Updates enemies positions.
+		for ene in &mut self.enemies {
+			ene.update_pos(self.player1.x_pos, self.player1.y_pos);
+		}
+
+		// Bullet hit enemy.
+		for bull in &mut self.bullets {
+			for ene in &mut self.enemies {
+				// Copied from https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+				if bull.x_pos < ene.x_pos + ene.width &&
+				   bull.x_pos + bull.width > ene.x_pos &&
+				   bull.y_pos < ene.y_pos + ene.height &&
+				   bull.y_pos + bull.height > ene.y_pos {
+					ene.is_alive = false;
+					bull.did_hit = true;
+				}
+			}
+		}
+
+		if self.enemies.is_empty() {
+			println!("You killed them all! You monster!");
+			// Wait for player to enter new room
+			// then spawn more enemies.
+		}
+
 		Ok(())
     }
 
@@ -89,6 +129,11 @@ impl EventHandler for MyGame {
 		// Draw bullets.
 		for bull in &self.bullets {
 			bull.draw(ctx)?;
+		}
+
+		// Draw enemies.
+		for ene in &self.enemies {
+			ene.draw(ctx)?;
 		}
 
         graphics::present(ctx)

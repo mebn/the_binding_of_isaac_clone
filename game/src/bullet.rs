@@ -1,6 +1,7 @@
 use ggez::graphics;
 use ggez::input::keyboard::{KeyCode};
 use ggez::{Context, GameResult};
+use ggez::audio::{Source, SoundSource};
 
 pub struct Bullet {
 	pub x_pos: f32,
@@ -17,8 +18,8 @@ impl Bullet {
 		Bullet {
 			x_pos,
 			y_pos,
-			width: if direction == KeyCode::Up || direction == KeyCode::Down { 15.0 } else { 30.0 },
-			height: if direction == KeyCode::Up || direction == KeyCode::Down { 30.0 } else { 15.0 },
+			width: if direction == KeyCode::Up || direction == KeyCode::Down { 10.0 } else { 20.0 },
+			height: if direction == KeyCode::Up || direction == KeyCode::Down { 20.0 } else { 10.0 },
 			speed: 30.0,
 			direction,
 			did_hit: false,
@@ -29,6 +30,7 @@ impl Bullet {
 		let rect = graphics::Rect::new(self.x_pos, self.y_pos, self.width, self.height);
 		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE)?;
 		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default())
+
 	}
 }
 
@@ -48,7 +50,8 @@ pub fn remove_old_bullets(bullet_vec: &mut Vec<Bullet>, w: f32, h: f32) {
 	// Removes Bullet from vec if
 	// the condition is not met.
 	bullet_vec.retain(|b| b.x_pos < w);
-	bullet_vec.retain(|b| b.x_pos > 0.0 - b.width);
+	bullet_vec.retain(|b| b.x_pos > 0.0 - b.width); // bug: 
 	bullet_vec.retain(|b| b.y_pos < h);
 	bullet_vec.retain(|b| b.y_pos > 0.0 - b.height);
+	bullet_vec.retain(|b| !b.did_hit);
 }
