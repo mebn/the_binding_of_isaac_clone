@@ -5,10 +5,10 @@ use ggez::event;
 use std::env;
 use std::path;
 
-pub const WIDTH: f32 = 1024.0;
+pub const WIDTH: f32 = 1080.0;
 pub const HEIGHT: f32 = 720.0;
 
-pub const INNER_WIDTH: f32 = 100.0;
+pub const INNER_WIDTH: f32 = 120.0;
 
 pub fn build_window() -> (Context, event::EventsLoop) {
     // Handle resource path.

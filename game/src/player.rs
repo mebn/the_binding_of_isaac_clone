@@ -54,7 +54,7 @@ impl Player {
 	}
 
 	pub fn what_door(&self) -> &str {
-		let door_width = 100.0;
+		let door_width = 95.0;
 
 		// right door.
 		if self.x_pos == window::WIDTH - self.width - window::INNER_WIDTH &&

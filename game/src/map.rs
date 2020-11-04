@@ -27,11 +27,6 @@ pub fn generate_map() -> Vec<Vec<bool>> {
     // make sure spawn room exists.
     map_vec[PLAYER_SPAWN.0][PLAYER_SPAWN.0] = true;
 
-    // prints the map
-    for row in &map_vec {
-        println!("{:?}", row);
-    };
-
     map_vec
 }
 

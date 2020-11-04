@@ -1,7 +1,6 @@
-use ggez::{Context, GameResult};
+use ggez::{Context};
 use ggez::graphics;
 // use ggez::audio::{Source};
-// use ggez::input::keyboard::{KeyCode, is_key_pressed};
 use rand::Rng;
 
 use crate::window;
@@ -16,13 +15,6 @@ pub struct Enemy {
 }
 
 impl Enemy {
-    // Draws a rectangle.
-	pub fn draw(&self, ctx: &mut Context) -> GameResult {
-		let rect = graphics::Rect::new(self.x_pos, self.y_pos, self.width, self.height);
-		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::Color::new(1.0, 0.0, 0.0, 1.0))?;
-		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default())
-    }
-
     pub fn update_pos(&mut self, player_x: f32, player_y: f32) {
         if self.x_pos >= player_x { self.x_pos -= self.speed; }
         if self.x_pos <= player_x { self.x_pos += self.speed; }
@@ -35,14 +27,14 @@ pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> 
     const OFFSET: f32 = 200.0;
     let mut rng = rand::thread_rng();
     let mut temp_vec = Vec::new();
-    let enemy_width_height = 40.0;
+    let size = 40.0;
 
     for _ in 0..how_many {
         let temp = Enemy {
-            x_pos: not_close_to_player(OFFSET, player_x, window::WIDTH, enemy_width_height),
-            y_pos: not_close_to_player(OFFSET, player_y, window::HEIGHT, enemy_width_height),
-            width: enemy_width_height,
-            height: enemy_width_height,
+            x_pos: not_close_to_player(OFFSET, player_x, window::WIDTH, size),
+            y_pos: not_close_to_player(OFFSET, player_y, window::HEIGHT, size),
+            width: size,
+            height: size,
             speed: rng.gen_range(0.0, 3.0) + 1.0,
             is_alive: true
         };
@@ -51,6 +43,14 @@ pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> 
     };
 
     temp_vec
+}
+
+pub fn draw(ctx: &mut Context, enemy_vec: &Vec<Enemy>) {
+	for bullet in enemy_vec {
+		let rect = graphics::Rect::new(bullet.x_pos, bullet.y_pos, bullet.width, bullet.height);
+		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::Color::new(1.0, 0.0, 0.0, 1.0)).unwrap();
+		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default()).unwrap();
+	};
 }
 
 pub fn remove_the_dead(enemies_vec: &mut Vec<Enemy>) {

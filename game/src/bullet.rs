@@ -1,7 +1,9 @@
 use ggez::graphics;
 use ggez::input::keyboard::{KeyCode};
-use ggez::{Context, GameResult};
+use ggez::{Context};
 // use ggez::audio::{Source, SoundSource};
+
+use crate::window;
 
 pub struct Bullet {
 	pub x_pos: f32,
@@ -25,13 +27,14 @@ impl Bullet {
 			did_hit: false,
 		}
 	}
+}
 
-	pub fn draw(&self, ctx: &mut Context) -> GameResult {
-		let rect = graphics::Rect::new(self.x_pos, self.y_pos, self.width, self.height);
-		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE)?;
-		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default())
-
-	}
+pub fn draw(ctx: &mut Context, bullet_vec: &Vec<Bullet>) {
+	for bullet in bullet_vec {
+		let rect = graphics::Rect::new(bullet.x_pos, bullet.y_pos, bullet.width, bullet.height);
+		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE).unwrap();
+		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default()).unwrap();
+	};
 }
 
 pub fn move_bullet(bullet_vec: &mut Vec<Bullet>) {
@@ -46,12 +49,11 @@ pub fn move_bullet(bullet_vec: &mut Vec<Bullet>) {
 	}
 }
 
-pub fn remove_old_bullets(bullet_vec: &mut Vec<Bullet>, w: f32, h: f32) {
-	// Removes Bullet from vec if
-	// the condition is not met.
-	bullet_vec.retain(|b| b.x_pos < w);
-	bullet_vec.retain(|b| b.x_pos > 0.0 - b.width); // bug: 
-	bullet_vec.retain(|b| b.y_pos < h);
+pub fn remove_old_bullets(bullet_vec: &mut Vec<Bullet>) {
+	// Removes Bullet from vec if the condition is not met.
+	bullet_vec.retain(|b| b.x_pos < window::WIDTH);
+	bullet_vec.retain(|b| b.x_pos > 0.0 - b.width);
+	bullet_vec.retain(|b| b.y_pos < window::HEIGHT);
 	bullet_vec.retain(|b| b.y_pos > 0.0 - b.height);
 	bullet_vec.retain(|b| !b.did_hit);
 }
