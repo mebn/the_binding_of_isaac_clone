@@ -1,7 +1,7 @@
 use ggez::graphics;
 use ggez::input::keyboard::{KeyCode};
 use ggez::{Context, GameResult};
-use ggez::audio::{Source, SoundSource};
+// use ggez::audio::{Source, SoundSource};
 
 pub struct Bullet {
 	pub x_pos: f32,
@@ -18,8 +18,8 @@ impl Bullet {
 		Bullet {
 			x_pos,
 			y_pos,
-			width: if direction == KeyCode::Up || direction == KeyCode::Down { 10.0 } else { 20.0 },
-			height: if direction == KeyCode::Up || direction == KeyCode::Down { 20.0 } else { 10.0 },
+			width: 20.0,
+			height: 20.0,
 			speed: 30.0,
 			direction,
 			did_hit: false,

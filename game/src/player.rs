@@ -1,7 +1,8 @@
 use ggez::{Context, GameResult};
 use ggez::graphics;
-use ggez::audio::{Source};
 use ggez::input::keyboard::{KeyCode, is_key_pressed};
+
+use crate::window;
 
 pub struct Player {
 	pub x_pos: f32,
@@ -10,6 +11,7 @@ pub struct Player {
     pub height: f32,
 	pub speed: f32,
 	pub fire_speed: f32,
+	pub current_room: (usize, usize),
 }
 
 impl Player {
@@ -36,10 +38,52 @@ impl Player {
 		}
 	}
 	
-	pub fn no_wall_hax(&mut self, width: f32, height: f32) {
-		if self.x_pos > width - self.width { self.x_pos = width - self.width; }
-		if self.x_pos < 0.0 { self.x_pos = 0.0; }
-		if self.y_pos > height - self.height { self.y_pos = height - self.height; }
-		if self.y_pos < 0.0 { self.y_pos = 0.0; }
+	pub fn no_wall_hax(&mut self) {
+		if self.x_pos > window::WIDTH - self.width - window::INNER_WIDTH {
+			self.x_pos = window::WIDTH - self.width - window::INNER_WIDTH;
+		}
+		if self.x_pos < window::INNER_WIDTH {
+			self.x_pos = window::INNER_WIDTH;
+		}
+		if self.y_pos > window::HEIGHT - self.height - window::INNER_WIDTH {
+			self.y_pos = window::HEIGHT - self.height - window::INNER_WIDTH;
+		}
+		if self.y_pos < window::INNER_WIDTH {
+			self.y_pos = window::INNER_WIDTH;
+		}
+	}
+
+	pub fn what_door(&self) -> &str {
+		let door_width = 100.0;
+
+		// right door.
+		if self.x_pos == window::WIDTH - self.width - window::INNER_WIDTH &&
+		   self.y_pos > window::HEIGHT / 2.0 - door_width &&
+		   self.y_pos < window::HEIGHT / 2.0 + door_width {
+			   return "right";
+		}
+
+		// left door.
+		if self.x_pos == window::INNER_WIDTH &&
+		   self.y_pos > window::HEIGHT / 2.0 - door_width &&
+		   self.y_pos < window::HEIGHT / 2.0 + door_width {
+			   return "left";
+		}
+
+		// top door.
+		if self.y_pos == window::INNER_WIDTH &&
+		   self.x_pos > window::WIDTH / 2.0 - door_width &&
+		   self.x_pos < window::WIDTH / 2.0 + door_width {
+			return "top";
+		}
+
+		// bottom door.
+		if self.y_pos == window::HEIGHT - self.height - window::INNER_WIDTH &&
+		   self.x_pos > window::WIDTH / 2.0 - door_width &&
+		   self.x_pos < window::WIDTH / 2.0 + door_width {
+			return "bottom";
+		}
+
+		return "none";
 	}
 }

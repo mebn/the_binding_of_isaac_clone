@@ -8,6 +8,8 @@ use std::path;
 pub const WIDTH: f32 = 1024.0;
 pub const HEIGHT: f32 = 720.0;
 
+pub const INNER_WIDTH: f32 = 100.0;
+
 pub fn build_window() -> (Context, event::EventsLoop) {
     // Handle resource path.
     let resource_dir = if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {

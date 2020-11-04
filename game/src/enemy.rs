@@ -1,8 +1,10 @@
 use ggez::{Context, GameResult};
 use ggez::graphics;
-use ggez::audio::{Source};
-use ggez::input::keyboard::{KeyCode, is_key_pressed};
+// use ggez::audio::{Source};
+// use ggez::input::keyboard::{KeyCode, is_key_pressed};
 use rand::Rng;
+
+use crate::window;
 
 pub struct Enemy {
 	pub x_pos: f32,
@@ -29,19 +31,19 @@ impl Enemy {
     }
 }
 
-pub fn spawn_enemies(how_many: u32, width: f32, height: f32, player_x: f32, player_y: f32) -> Vec<Enemy> {
+pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> {
     const OFFSET: f32 = 200.0;
     let mut rng = rand::thread_rng();
     let mut temp_vec = Vec::new();
-    let enemy_width_height = 25.0;
+    let enemy_width_height = 40.0;
 
     for _ in 0..how_many {
         let temp = Enemy {
-            x_pos: not_close_to_player(OFFSET, player_x, width, enemy_width_height),
-            y_pos: not_close_to_player(OFFSET, player_y, height, enemy_width_height),
+            x_pos: not_close_to_player(OFFSET, player_x, window::WIDTH, enemy_width_height),
+            y_pos: not_close_to_player(OFFSET, player_y, window::HEIGHT, enemy_width_height),
             width: enemy_width_height,
             height: enemy_width_height,
-            speed: rng.gen_range(0.0, 4.0) + 1.0,
+            speed: rng.gen_range(0.0, 3.0) + 1.0,
             is_alive: true
         };
 
