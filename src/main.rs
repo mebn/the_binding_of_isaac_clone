@@ -77,7 +77,7 @@ impl MyGame {
 			width: 60.0,
 			height: 60.0,
 			speed: 7.0,
-			fire_speed: 0.5, // half a sec reload time.
+			reload_time: player::RELOAD_TIME,
 			current_room: map::PLAYER_SPAWN,
 		};
 
@@ -93,7 +93,6 @@ impl MyGame {
 
 	fn handle_player_door_movement(&mut self, direction: u32) {
 		self.bullets = Vec::new();
-		self.rooms[self.player1.current_room.0][self.player1.current_room.1].player_is_here = false;
 
 		if direction == 0 {
 			self.player1.current_room = (self.player1.current_room.0, self.player1.current_room.1 - 1);
@@ -122,7 +121,7 @@ impl EventHandler for MyGame {
 		const DESIRED_FPS: u32 = 60;
 		while timer::check_update_time(ctx, DESIRED_FPS) {
 			let seconds = 1.0 / (DESIRED_FPS as f32);
-			self.player1.fire_speed -= seconds;
+			self.player1.reload_time -= seconds;
 		}
 
 		// Handle movement for player1.
@@ -137,18 +136,19 @@ impl EventHandler for MyGame {
 		// check if player enters new room.
 		if self.rooms[self.player1.current_room.0][self.player1.current_room.1].is_finished {
 			let possible_rooms = map::room_next(self.player1.current_room, &self.map);
+			let dist_from_door = 10.0;
 
 			if possible_rooms[0] && self.player1.what_door() == "left" {
-				self.player1.x_pos = window::WIDTH - window::INNER_WIDTH - self.player1.width * 2.0;
+				self.player1.x_pos = window::WIDTH - window::INNER_WIDTH - self.player1.width - dist_from_door;
 				self.handle_player_door_movement(0);
 			} else if possible_rooms[1] && self.player1.what_door() == "top" {
-				self.player1.y_pos = window::HEIGHT - window::INNER_WIDTH - self.player1.height * 2.0;
+				self.player1.y_pos = window::HEIGHT - window::INNER_WIDTH - self.player1.height - dist_from_door;
 				self.handle_player_door_movement(1);
 			} else if possible_rooms[2] && self.player1.what_door() == "right" {
-				self.player1.x_pos = window::INNER_WIDTH + self.player1.width;
+				self.player1.x_pos = window::INNER_WIDTH + dist_from_door;
 				self.handle_player_door_movement(2);
 			} else if possible_rooms[3] && self.player1.what_door() == "bottom" {
-				self.player1.y_pos = 0.0 + window::INNER_WIDTH + self.player1.height;
+				self.player1.y_pos = 0.0 + window::INNER_WIDTH + dist_from_door;
 				self.handle_player_door_movement(3);
 			}
 		}
@@ -158,22 +158,22 @@ impl EventHandler for MyGame {
 		// Removes bullets outside of window.
 		bullet::remove_old_bullets(&mut self.bullets);
 		// Creates a new bullet on correct keypress.
-		if is_key_pressed(ctx, keyboard::KeyCode::Right) && self.player1.fire_speed < 0.0 {
+		if is_key_pressed(ctx, keyboard::KeyCode::Right) && self.player1.reload_time < 0.0 {
 			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Right);
 			self.bullets.push(new_bullet);
-			self.player1.fire_speed = 0.5;
-		}else if is_key_pressed(ctx, keyboard::KeyCode::Left) && self.player1.fire_speed < 0.0 {
+			self.player1.reload_time = player::RELOAD_TIME;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Left) && self.player1.reload_time < 0.0 {
 			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Left);
 			self.bullets.push(new_bullet);
-			self.player1.fire_speed = 0.5;
-		}else if is_key_pressed(ctx, keyboard::KeyCode::Up) && self.player1.fire_speed < 0.0 {
+			self.player1.reload_time = player::RELOAD_TIME;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Up) && self.player1.reload_time < 0.0 {
 			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Up);
 			self.bullets.push(new_bullet);
-			self.player1.fire_speed = 0.5;
-		}else if is_key_pressed(ctx, keyboard::KeyCode::Down) && self.player1.fire_speed < 0.0 {
+			self.player1.reload_time = player::RELOAD_TIME;
+		}else if is_key_pressed(ctx, keyboard::KeyCode::Down) && self.player1.reload_time < 0.0 {
 			let new_bullet = bullet::Bullet::new(self.player1.x_pos, self.player1.y_pos, KeyCode::Down);
 			self.bullets.push(new_bullet);
-			self.player1.fire_speed = 0.5;
+			self.player1.reload_time = player::RELOAD_TIME;
 		}
 
 		// Updates enemies positions.
@@ -195,7 +195,7 @@ impl EventHandler for MyGame {
 			}
 		}
 
-		// remove dead eneemies.
+		// remove dead enemies.
 		enemy::remove_the_dead(&mut self.enemies);
 
 		Ok(())

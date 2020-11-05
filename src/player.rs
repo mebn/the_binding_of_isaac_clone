@@ -4,13 +4,15 @@ use ggez::input::keyboard::{KeyCode, is_key_pressed};
 
 use crate::window;
 
+pub const RELOAD_TIME: f32 = 0.4;
+
 pub struct Player {
 	pub x_pos: f32,
     pub y_pos: f32,
     pub width: f32,
     pub height: f32,
 	pub speed: f32,
-	pub fire_speed: f32,
+	pub reload_time: f32,
 	pub current_room: (usize, usize),
 }
 

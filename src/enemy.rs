@@ -35,7 +35,7 @@ pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> 
             y_pos: not_close_to_player(OFFSET, player_y, window::HEIGHT, size),
             width: size,
             height: size,
-            speed: rng.gen_range(0.0, 3.0) + 1.0,
+            speed: rng.gen_range(1.0, 4.0),
             is_alive: true
         };
 
