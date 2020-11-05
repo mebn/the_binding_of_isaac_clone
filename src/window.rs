@@ -22,7 +22,7 @@ pub fn build_window() -> (Context, event::EventsLoop) {
     
     // Settings about the window.
 	let cb = ContextBuilder::new("game_0", "nilsen")
-		.window_setup(conf::WindowSetup::default().title("My Game!"))
+		.window_setup(conf::WindowSetup::default().title("The Binding of Isaac: clone"))
 		.window_mode(conf::WindowMode::default().dimensions(WIDTH, HEIGHT))
         .add_resource_path(resource_dir)
         .build()

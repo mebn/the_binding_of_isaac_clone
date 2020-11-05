@@ -15,7 +15,7 @@ pub fn generate_map() -> Vec<Vec<bool>> {
         let mut col: Vec<bool> = Vec::new();
 
         for _ in 0..MAP_SIZE {
-            let rand_val = rng.gen_range(0, 10);
+            let rand_val = rng.gen_range(0, 4);
             let room_or_not = rand_val != 0;
 
             col.push(room_or_not);

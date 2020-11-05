@@ -1,9 +1,14 @@
 use ggez::graphics;
-use ggez::input::keyboard::{KeyCode};
+use ggez::input::keyboard::{KeyCode, is_key_pressed};
 use ggez::{Context};
-// use ggez::audio::{Source, SoundSource};
 
 use crate::window;
+use crate::player::{Player, RELOAD_TIME};
+
+use crate::mygame::{MyGame};
+use cgmath::{Point2};
+
+const BULLET_WH: f32 =  40.0;
 
 pub struct Bullet {
 	pub x_pos: f32,
@@ -20,20 +25,27 @@ impl Bullet {
 		Bullet {
 			x_pos,
 			y_pos,
-			width: 20.0,
-			height: 20.0,
-			speed: 30.0,
+			width: BULLET_WH,
+			height: BULLET_WH,
+			speed: 20.0,
 			direction,
 			did_hit: false,
 		}
 	}
 }
 
-pub fn draw(ctx: &mut Context, bullet_vec: &Vec<Bullet>) {
-	for bullet in bullet_vec {
-		let rect = graphics::Rect::new(bullet.x_pos, bullet.y_pos, bullet.width, bullet.height);
-		let rect_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), rect, graphics::WHITE).unwrap();
-		graphics::draw(ctx, &rect_mesh, graphics::DrawParam::default()).unwrap();
+pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
+	for bullet in &mygame.bullets {
+		let dst: Point2<f32> = Point2::new(bullet.x_pos, bullet.y_pos);
+	
+		let scale = {
+			let wh = 30.0;
+			let scale_f = BULLET_WH / wh;
+			[scale_f, scale_f]
+		};
+
+		let param = graphics::DrawParam::new().dest(dst).scale(scale);
+		graphics::draw(ctx, &mygame.assets.bullet, param).unwrap();
 	};
 }
 
@@ -56,4 +68,25 @@ pub fn remove_old_bullets(bullet_vec: &mut Vec<Bullet>) {
 	bullet_vec.retain(|b| b.y_pos < window::HEIGHT);
 	bullet_vec.retain(|b| b.y_pos > 0.0 - b.height);
 	bullet_vec.retain(|b| !b.did_hit);
+}
+
+fn fire_a_bullet(bullet_vec: &mut Vec<Bullet>, player: &mut Player, direction: KeyCode) {
+	let x = player.x_pos + (player.width - BULLET_WH) / 2.0;
+	let y = player.y_pos + (player.height - BULLET_WH) / 2.0;
+	
+	let new_bullet = Bullet::new(x, y, direction);
+	bullet_vec.push(new_bullet);
+	player.reload_time = RELOAD_TIME;
+}
+
+pub fn fire_new_bullet_on_keypress(ctx: &Context, bullet_vec: &mut Vec<Bullet>, player: &mut Player) {
+	if is_key_pressed(ctx, KeyCode::Right) && player.ready_to_fire() {
+		fire_a_bullet(bullet_vec, player, KeyCode::Right);
+	}else if is_key_pressed(ctx, KeyCode::Left) && player.ready_to_fire() {
+		fire_a_bullet(bullet_vec, player, KeyCode::Left);
+	}else if is_key_pressed(ctx, KeyCode::Up) && player.ready_to_fire() {
+		fire_a_bullet(bullet_vec, player, KeyCode::Up);
+	}else if is_key_pressed(ctx, KeyCode::Down) && player.ready_to_fire() {
+		fire_a_bullet(bullet_vec, player, KeyCode::Down);
+	}
 }
