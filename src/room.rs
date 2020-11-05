@@ -30,7 +30,7 @@ impl Room {
             doors: Vec::new(),
             neighbors: Vec::new(),
             is_finished: false,
-            num_of_enemies: rng.gen_range(0, 10),
+            num_of_enemies: rng.gen_range(1, 10),
         }
     }
 }
