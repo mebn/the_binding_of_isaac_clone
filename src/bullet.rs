@@ -4,8 +4,8 @@ use ggez::{Context};
 
 use crate::window;
 use crate::player::{Player, RELOAD_TIME};
-
 use crate::mygame::{MyGame};
+
 use cgmath::{Point2};
 
 const BULLET_WH: f32 =  40.0;
@@ -80,13 +80,15 @@ fn fire_a_bullet(bullet_vec: &mut Vec<Bullet>, player: &mut Player, direction: K
 }
 
 pub fn fire_new_bullet_on_keypress(ctx: &Context, bullet_vec: &mut Vec<Bullet>, player: &mut Player) {
-	if is_key_pressed(ctx, KeyCode::Right) && player.ready_to_fire() {
-		fire_a_bullet(bullet_vec, player, KeyCode::Right);
-	}else if is_key_pressed(ctx, KeyCode::Left) && player.ready_to_fire() {
-		fire_a_bullet(bullet_vec, player, KeyCode::Left);
-	}else if is_key_pressed(ctx, KeyCode::Up) && player.ready_to_fire() {
-		fire_a_bullet(bullet_vec, player, KeyCode::Up);
-	}else if is_key_pressed(ctx, KeyCode::Down) && player.ready_to_fire() {
-		fire_a_bullet(bullet_vec, player, KeyCode::Down);
+	if player.ready_to_fire() {
+		if is_key_pressed(ctx, KeyCode::Right) {
+			fire_a_bullet(bullet_vec, player, KeyCode::Right);
+		} else if is_key_pressed(ctx, KeyCode::Left) {
+			fire_a_bullet(bullet_vec, player, KeyCode::Left);
+		} else if is_key_pressed(ctx, KeyCode::Up) {
+			fire_a_bullet(bullet_vec, player, KeyCode::Up);
+		} else if is_key_pressed(ctx, KeyCode::Down) {
+			fire_a_bullet(bullet_vec, player, KeyCode::Down);
+		}
 	}
 }

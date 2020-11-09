@@ -5,14 +5,14 @@ use crate::bullet::{Bullet};
 use crate::assets::{Assets};
 
 #[derive(PartialEq)]
-pub enum Game_state {
+pub enum GameState {
 	GAME,
 	GAMEOVER,
 	GAMEMENU
 }
 
 pub struct MyGame {
-    pub game_state: Game_state,
+    pub game_state: GameState,
 	pub player1: Player,
 	pub bullets: Vec<Bullet>,
 	pub enemies: Vec<Enemy>,

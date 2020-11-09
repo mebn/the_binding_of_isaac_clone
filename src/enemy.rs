@@ -4,8 +4,8 @@ use rand::Rng;
 
 use crate::window;
 use crate::player::{Player};
-
 use crate::mygame::{MyGame};
+
 use cgmath::{Point2};
 
 pub struct Enemy {
@@ -17,12 +17,12 @@ pub struct Enemy {
     pub is_alive: bool
 }
 
-impl Enemy {
-    pub fn update_pos(&mut self, player_x: f32, player_y: f32) {
-        if self.x_pos >= player_x { self.x_pos -= self.speed; }
-        if self.x_pos <= player_x { self.x_pos += self.speed; }
-        if self.y_pos >= player_y { self.y_pos -= self.speed; }
-        if self.y_pos <= player_y { self.y_pos += self.speed; }
+pub fn update_pos(enemy_vec: &mut Vec<Enemy>, player: &Player) {
+    for enemy in enemy_vec {
+        if enemy.x_pos >= player.x_pos { enemy.x_pos -= enemy.speed; }
+        if enemy.x_pos <= player.x_pos { enemy.x_pos += enemy.speed; }
+        if enemy.y_pos >= player.y_pos { enemy.y_pos -= enemy.speed; }
+        if enemy.y_pos <= player.y_pos { enemy.y_pos += enemy.speed; }
     }
 }
 

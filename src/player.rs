@@ -1,11 +1,9 @@
-use ggez::{Context, GameResult};
+use ggez::{Context};
 use ggez::graphics;
 use ggez::input::keyboard::{KeyCode, is_key_pressed};
 
-use crate::window;
+use crate::{window, map, enemy};
 use crate::mygame::{MyGame};
-use crate::map;
-use crate::enemy;
 
 use cgmath::{Point2};
 
@@ -17,7 +15,6 @@ pub enum Door {
 	TOP = 1,
 	RIGHT = 2,
 	BOTTOM = 3,
-	NONE
 }
 
 pub struct Player {
@@ -46,7 +43,6 @@ pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
 }
 
 impl Player {
-    // Binds keypressess to movement.
     pub fn movement(&mut self, ctx: &Context) {
         if is_key_pressed(ctx, KeyCode::D) {
 			self.x_pos += self.speed;
@@ -77,38 +73,39 @@ impl Player {
 		}
 	}
 
-	pub fn is_at_door(&self) -> Door {
+	fn is_at_door(&self, door: &Door) -> bool {
 		let door_width = 95.0;
 
 		// left door.
-		if self.x_pos == window::INNER_WIDTH &&
-		self.y_pos > window::HEIGHT / 2.0 - door_width &&
-		self.y_pos < window::HEIGHT / 2.0 + door_width {
-			return Door::LEFT;
-	 }
-
-		// top door.
-		if self.y_pos == window::INNER_WIDTH &&
-		   self.x_pos > window::WIDTH / 2.0 - door_width &&
-		   self.x_pos < window::WIDTH / 2.0 + door_width {
-			return Door::TOP;
-		}
-
-		// right door.
-		if self.x_pos == window::WIDTH - self.width - window::INNER_WIDTH &&
+		if door == &Door::LEFT &&
+		   self.x_pos == window::INNER_WIDTH &&
 		   self.y_pos > window::HEIGHT / 2.0 - door_width &&
 		   self.y_pos < window::HEIGHT / 2.0 + door_width {
-			   return Door::RIGHT;
-		}
-
-		// bottom door.
-		if self.y_pos == window::HEIGHT - self.height - window::INNER_WIDTH &&
+			return true;
+	 	}
+		// top door.
+		else if door == &Door::TOP &&
+		   self.y_pos == window::INNER_WIDTH &&
 		   self.x_pos > window::WIDTH / 2.0 - door_width &&
 		   self.x_pos < window::WIDTH / 2.0 + door_width {
-			return Door::BOTTOM;
+			return true;
+		}
+		// right door.
+		else if door == &Door::RIGHT &&
+		   self.x_pos == window::WIDTH - self.width - window::INNER_WIDTH &&
+		   self.y_pos > window::HEIGHT / 2.0 - door_width &&
+		   self.y_pos < window::HEIGHT / 2.0 + door_width {
+			return true;
+		}
+		// bottom door.
+		else if door == &Door::BOTTOM &&
+		   self.y_pos == window::HEIGHT - self.height - window::INNER_WIDTH &&
+		   self.x_pos > window::WIDTH / 2.0 - door_width &&
+		   self.x_pos < window::WIDTH / 2.0 + door_width {
+			return true;
 		}
 
-		Door::NONE
+		false
 	}
 
 	pub fn ready_to_fire(&self) -> bool {
@@ -120,53 +117,52 @@ impl Player {
 	}
 }
 
+fn go_through_door(player: &mut Player, door: &Door) {
+	let dist_from_door = 10.0;
+
+	let (row, col) = player.current_room; // row and col in 2d vec.
+
+	if door == &Door::LEFT {
+		player.x_pos = window::WIDTH - window::INNER_WIDTH - player.width - dist_from_door;
+		player.current_room = (row, col - 1);
+	} else if door == &Door::TOP {
+		player.y_pos = window::HEIGHT - window::INNER_WIDTH - player.height - dist_from_door;
+		player.current_room = (row - 1, col);
+	} else if door == &Door::RIGHT {
+		player.x_pos = window::INNER_WIDTH + dist_from_door;
+		player.current_room = (row, col + 1);
+	} else if door == &Door::BOTTOM {
+		player.y_pos = 0.0 + window::INNER_WIDTH + dist_from_door;
+		player.current_room = (row + 1, col);
+	}
+}
+
 fn handle_player_door_movement(mygame: &mut MyGame) {
 	mygame.bullets = Vec::new();
 
 	// check if player has already been in the room
-	if !mygame.rooms[mygame.player1.current_room.0][mygame.player1.current_room.1].is_finished {
-		// spawn enemies
+	let (row, col) = mygame.player1.current_room;
+	if !mygame.rooms[row][col].is_finished {
 		mygame.enemies = enemy::spawn_enemies(
-			mygame.rooms[mygame.player1.current_room.0][mygame.player1.current_room.0].num_of_enemies,
+			mygame.rooms[row][col].num_of_enemies,
 			mygame.player1.x_pos,
 			mygame.player1.y_pos);
 	}
 }
 
-fn go_through_door(player: &mut Player, door: Door) {
-	let dist_from_door = 10.0;
-
-	if door == Door::LEFT {
-		player.x_pos = window::WIDTH - window::INNER_WIDTH - player.width - dist_from_door;
-		player.current_room = (player.current_room.0, player.current_room.1 - 1);
-	} else if door == Door::TOP {
-		player.y_pos = window::HEIGHT - window::INNER_WIDTH - player.height - dist_from_door;
-		player.current_room = (player.current_room.0 - 1, player.current_room.1);
-	} else if door == Door::RIGHT {
-		player.x_pos = window::INNER_WIDTH + dist_from_door;
-		player.current_room = (player.current_room.0, player.current_room.1 + 1);
-	} else if door == Door::BOTTOM {
-		player.y_pos = 0.0 + window::INNER_WIDTH + dist_from_door;
-		player.current_room = (player.current_room.0 + 1, player.current_room.1);
-	}
-}
-
 pub fn enter_new_room(mygame: &mut MyGame) {
-	if mygame.rooms[mygame.player1.current_room.0][mygame.player1.current_room.1].is_finished {
+	let (row, col) = mygame.player1.current_room;
+	
+	if mygame.rooms[row][col].is_finished {
+		// This checks if there is a door to the left/top/right/bottom.
 		let possible_rooms = map::room_next(mygame.player1.current_room, &mygame.map);
+		let doors_on_side = [Door::LEFT, Door::TOP, Door::RIGHT, Door::BOTTOM];
 
-		if possible_rooms[0] && mygame.player1.is_at_door() == Door::LEFT {
-			go_through_door(&mut mygame.player1, Door::LEFT);
-			handle_player_door_movement(mygame);
-		} else if possible_rooms[1] && mygame.player1.is_at_door() == Door::TOP {
-			go_through_door(&mut mygame.player1, Door::TOP);
-			handle_player_door_movement(mygame);
-		} else if possible_rooms[2] && mygame.player1.is_at_door() == Door::RIGHT {
-			go_through_door(&mut mygame.player1, Door::RIGHT);
-			handle_player_door_movement(mygame);
-		} else if possible_rooms[3] && mygame.player1.is_at_door() == Door::BOTTOM {
-			go_through_door(&mut mygame.player1, Door::BOTTOM);
-			handle_player_door_movement(mygame);
+		for (index, val) in doors_on_side.iter().enumerate() {
+			if possible_rooms[index] && mygame.player1.is_at_door(val) {
+				go_through_door(&mut mygame.player1, val);
+				handle_player_door_movement(mygame);
+			}
 		}
 	}
 }

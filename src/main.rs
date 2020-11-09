@@ -4,9 +4,6 @@
 use ggez::{Context, GameResult};
 use ggez::event::{self, EventHandler};
 use ggez::graphics;
-use ggez::graphics::{Image};
-
-use ggez::timer;
 
 mod mygame;
 mod window;
@@ -16,41 +13,26 @@ mod enemy;
 mod room;
 mod map;
 mod assets;
+mod state;
 
-mod game;
-
-use mygame::{MyGame, Game_state};
-use assets::{Assets};
+use mygame::{MyGame, GameState};
 
 impl MyGame {
     pub fn new(ctx: &mut Context) -> MyGame {
-		// Load/create resources here: images, fonts, sounds, etc.
-		let assets = Assets {
-			basements: Image::new(ctx, "/bg.png").unwrap(),
-			left_door_open: Image::new(ctx, "/left_door_open.png").unwrap(),
-			left_door_closed: Image::new(ctx, "/left_door_closed.png").unwrap(),
-			top_door_open: Image::new(ctx, "/top_door_open.png").unwrap(),
-			top_door_closed: Image::new(ctx, "/top_door_closed.png").unwrap(),
-			right_door_open: Image::new(ctx, "/right_door_open.png").unwrap(),
-			right_door_closed: Image::new(ctx, "/right_door_closed.png").unwrap(),
-			bot_door_open: Image::new(ctx, "/bot_door_open.png").unwrap(),
-			bot_door_closed: Image::new(ctx, "/bot_door_closed.png").unwrap(),
-			head: Image::new(ctx, "/head.png").unwrap(),
-			bullet: Image::new(ctx, "/bullet.png").unwrap(),
-			enemy: Image::new(ctx, "/enemy.png").unwrap(),
-		};
+		let assets = assets::add_assets(ctx);
 
 		// Rooms
 		let mut rooms: Vec<Vec<room::Room>> = Vec::new();
 		for row in 0..13 {
 			let mut row_vec: Vec<room::Room> = Vec::new();
 			for col in 0..13 {
-				row_vec.push(room::Room::new((row, col)));
+				row_vec.push(room::Room::new((row, col), &assets));
 			}
 
 			rooms.push(row_vec);
 		}
-		rooms[map::PLAYER_SPAWN.0][map::PLAYER_SPAWN.1] = room::Room::init();
+		let (row, col) = map::PLAYER_SPAWN;
+		rooms[row][col] = room::Room::init();
 
 
 		let player1 = player::Player {
@@ -65,7 +47,7 @@ impl MyGame {
 		};
 
         MyGame {
-			game_state: Game_state::GAME,
+			game_state: GameState::GAME,
 			player1,
 			bullets: Vec::new(),
 			enemies: Vec::new(),
@@ -79,8 +61,12 @@ impl MyGame {
 
 impl EventHandler for MyGame {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
-		if self.game_state == Game_state::GAME {
-			game::update(ctx, self);
+		if self.game_state == GameState::GAME {
+			state::game::update(ctx, self);
+		} else if self.game_state == GameState::GAMEOVER {
+
+		} else if self.game_state == GameState::GAMEMENU {
+			state::game_menu::update(ctx, self);
 		}
 
 		Ok(())
@@ -89,22 +75,23 @@ impl EventHandler for MyGame {
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
 		graphics::clear(ctx, graphics::BLACK);
 
-		if self.game_state == Game_state::GAME {
-			game::draw(ctx, self);
-		} else if self.game_state
-		 == Game_state::GAMEOVER {
+		if self.game_state == GameState::GAME {
+			state::game::draw(ctx, self);
+		} else if self.game_state == GameState::GAMEOVER {
 			graphics::clear(ctx, graphics::BLACK);
-		 }
+		} else if self.game_state == GameState::GAMEMENU {
+			state::game_menu::draw(ctx, self);
+		}
 		
         graphics::present(ctx)
 	}
 }
 
+
 fn main() {
 	let (mut ctx, mut event_loop) = window::build_window();
 	let mut my_game = MyGame::new(&mut ctx);
 
-    // Run!
     match event::run(&mut ctx, &mut event_loop, &mut my_game) {
         Ok(_) => println!("Exited cleanly."),
         Err(e) => println!("Error occured: {}", e)

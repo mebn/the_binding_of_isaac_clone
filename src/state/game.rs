@@ -1,13 +1,8 @@
 use ggez::{Context};
 use ggez::timer;
 
-use crate::mygame;
-use crate::player;
-use crate::bullet;
-use crate::enemy;
-use crate::room;
-
-use mygame::{MyGame, Game_state};
+use crate::{mygame, player, bullet, enemy, room};
+use mygame::{MyGame, GameState};
 
 pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     // Handle cooldown when shooting bullets.
@@ -22,7 +17,7 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     mygame.player1.no_wall_hax();
     if mygame.player1.player_still_alive() {
         println!("SCORE: {}", mygame.score);
-        mygame.game_state = Game_state::GAMEOVER;
+        mygame.game_state = GameState::GAMEOVER;
     }
     player::enter_new_room(mygame);
 
@@ -31,15 +26,15 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     bullet::fire_new_bullet_on_keypress(ctx, &mut mygame.bullets, &mut mygame.player1);
 
     // Bullet hit enemy.
-    for bull in &mut mygame.bullets {
-        for ene in &mut mygame.enemies {
+    for bullet in &mut mygame.bullets {
+        for enemy in &mut mygame.enemies {
             // Copied from https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
-            if bull.x_pos < ene.x_pos + ene.width &&
-                bull.x_pos + bull.width > ene.x_pos &&
-                bull.y_pos < ene.y_pos + ene.height &&
-                bull.y_pos + bull.height > ene.y_pos {
-                ene.is_alive = false;
-                bull.did_hit = true;
+            if bullet.x_pos < enemy.x_pos + enemy.width &&
+                bullet.x_pos + bullet.width > enemy.x_pos &&
+                bullet.y_pos < enemy.y_pos + enemy.height &&
+                bullet.y_pos + bullet.height > enemy.y_pos {
+                enemy.is_alive = false;
+                bullet.did_hit = true;
                 mygame.score += 1;
             }
         }
@@ -47,25 +42,20 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
 
     // Check if player killed all enemies and if so, mark the room.
     if mygame.enemies.is_empty() {
-        mygame.rooms[mygame.player1.current_room.0][mygame.player1.current_room.1].is_finished = true;
+        let (row, col) = mygame.player1.current_room;
+        mygame.rooms[row][col].is_finished = true;
     }
 
     enemy::enemy_hit_player(&mut mygame.enemies, &mut mygame.player1);
-
-    // Updates enemies positions.
-    for ene in &mut mygame.enemies {
-        ene.update_pos(mygame.player1.x_pos, mygame.player1.y_pos);
-    }
+    enemy::update_pos(&mut mygame.enemies, &mygame.player1);
     enemy::remove_the_dead(&mut mygame.enemies);
 }
 
 
 
 pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
-    // Draws background and doors.
     room::draw_background(ctx, mygame);
     room::draw_doors(ctx, mygame);
-
     bullet::draw(ctx, mygame);
     enemy::draw(ctx, mygame);
     player::draw(ctx, mygame);

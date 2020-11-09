@@ -30,40 +30,43 @@ pub fn generate_map() -> Vec<Vec<bool>> {
     map_vec
 }
 
+// check if it's possible to enter a room next to current room. 
+// returns vec with true/false for doors [left, top, right, bottom]
 pub fn room_next(current_location: (usize, usize), map: &Vec<Vec<bool>>) -> Vec<bool> {
-    let mut possible_doors: Vec<bool> = vec!(false, false, false, false); // [left, top, right, bot]
+    let mut possible_doors: Vec<bool> = vec![false; 4]; // [left, top, right, bot]
+    let (row, col) = current_location;
     
     // left
-    if current_location.1 == 0 {
+    if col == 0 {
         possible_doors[0] = false;
-    } else if map[current_location.0][current_location.1 - 1] {
+    } else if map[row][col - 1] {
         possible_doors[0] = true;
     } else {
         possible_doors[0] = false;
     }
 
     // top
-    if current_location.0 == 0 {
+    if row == 0 {
         possible_doors[1] = false;
-    } else if map[current_location.0 - 1][current_location.1] {
+    } else if map[row - 1][col] {
         possible_doors[1] = true;
     } else {
         possible_doors[1] = false;
     }
 
     // right
-    if current_location.1 == MAP_SIZE - 1 {
+    if col == MAP_SIZE - 1 {
         possible_doors[2] = false;
-    } else if map[current_location.0][current_location.1 + 1] {
+    } else if map[row][col + 1] {
         possible_doors[2] = true;
     } else {
         possible_doors[2] = false;
     }
 
     // bottom
-    if current_location.0 == MAP_SIZE - 1 {
+    if row == MAP_SIZE - 1 {
         possible_doors[3] = false;
-    } else if map[current_location.0 + 1][current_location.1] {
+    } else if map[row + 1][col] {
         possible_doors[3] = true;
     } else {
         possible_doors[3] = false;
