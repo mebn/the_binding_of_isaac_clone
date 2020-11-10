@@ -113,7 +113,7 @@ impl Player {
 	}
 
 	pub fn player_still_alive(&self) -> bool {
-		self.life <= 0
+		self.life > 0
 	}
 }
 

@@ -5,9 +5,11 @@ pub struct Assets {
 	// background
 	pub backgrounds: Vec<Image>,
 
+	// other
 	pub head: Image,
 	pub enemy: Image,
 	pub bullet: Image,
+
 	// doors
 	pub left_door_open: Image,
 	pub left_door_closed: Image,
@@ -16,7 +18,11 @@ pub struct Assets {
 	pub top_door_open: Image,
 	pub top_door_closed: Image,
 	pub bot_door_open: Image,
-    pub bot_door_closed: Image,
+	pub bot_door_closed: Image,
+	
+	// backgrounds for menus
+	pub game_menu: Image,
+	pub game_over: Image,
 }
 
 pub fn add_assets(ctx: &mut Context) -> Assets {
@@ -42,5 +48,7 @@ pub fn add_assets(ctx: &mut Context) -> Assets {
 		right_door_closed: Image::new(ctx, "/doors/right_closed.png").unwrap(),
 		bot_door_open: Image::new(ctx, "/doors/bot_open.png").unwrap(),
 		bot_door_closed: Image::new(ctx, "/doors/bot_closed.png").unwrap(),
+		game_menu: Image::new(ctx, "/game_menu.png").unwrap(),
+		game_over: Image::new(ctx, "/game_over.png").unwrap(),
 	}
 }

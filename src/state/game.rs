@@ -2,7 +2,7 @@ use ggez::{Context};
 use ggez::timer;
 
 use crate::{mygame, player, bullet, enemy, room};
-use mygame::{MyGame, GameState};
+use mygame::{MyGame, GameState, new_game};
 
 pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     // Handle cooldown when shooting bullets.
@@ -15,8 +15,11 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     // Handle movement for player1.
     mygame.player1.movement(ctx);
     mygame.player1.no_wall_hax();
-    if mygame.player1.player_still_alive() {
+
+    // GAME OVER!
+    if !mygame.player1.player_still_alive() {
         println!("SCORE: {}", mygame.score);
+        *mygame = new_game(ctx, GameState::GAMEOVER);
         mygame.game_state = GameState::GAMEOVER;
     }
     player::enter_new_room(mygame);
