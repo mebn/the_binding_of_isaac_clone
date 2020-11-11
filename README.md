@@ -1,5 +1,5 @@
 # nilszen-task-8
-The binding of isaac clone skriven i rust.
+The binding of isaac klon skriven i rust.
 
 ## Utveckling
 Utveckling under de 2 veckorna.
