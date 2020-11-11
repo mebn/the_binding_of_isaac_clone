@@ -1,6 +1,21 @@
 # nilszen-task-8
-The binding of isaac clone written in rust.
+The binding of isaac clone skriven i rust.
 
-### Progress på spelet: 06/11-20 (en vecka efter vi fick uppgiften)
+## Utveckling
+Utveckling under de 2 veckorna.
 
-[Här](https://youtu.be/FO3xSMTCcX0) finns en video på hur spelet ser ut och fungerar just nu. Det som fungerar nu är hp på spelaren och fiender, rum generation, man kan gå tillbaka in i ett rum utan att nya monster spawnar in (dvs state:en på rummet sparas), man kan röra sig, skjuta, dö, se hur många monster man dödat (när man själv har dött) och säker mer som jag inte kommer på just nu :)
+### 06/11-20 (en vecka efter vi fick uppgiften)
+[Här](https://youtu.be/FO3xSMTCcX0) finns en video på hur spelet ser ut och fungerar just nu. Det som fungerar nu är:
+* HP på spelare och fiender
+* rum generation (man kan gå tillbaka till ett tidigare rum utan att nya fiender spawnar, dvs state:en av rummet sparas)
+* röra sig
+* skjuta
+* dö
+* se hur många fiender man har dödat (efter man själv har dött)
+* säker fler saker som jag inte kommer på nu.
+
+### 13/11-20 (två veckor efter vi fick uppgiften)
+
+
+## Info
+`./_regular` är bara regular uppgiften och har ingeting med mitt spel att göra.
