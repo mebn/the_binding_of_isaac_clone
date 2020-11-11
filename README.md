@@ -12,7 +12,7 @@ Utveckling under de 2 veckorna.
 * skjuta
 * dö
 * se hur många fiender man har dödat (efter man själv har dött)
-* säker fler saker som jag inte kommer på nu.
+* säkert fler saker som jag inte kommer på nu.
 
 ### 13/11-20 (två veckor efter vi fick uppgiften)
 
