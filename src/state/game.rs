@@ -1,5 +1,6 @@
-use ggez::{Context};
+use ggez::{Context, graphics};
 use ggez::timer;
+use cgmath::{Point2};
 
 use std::fs::OpenOptions;
 use std::io::prelude::*;
@@ -78,4 +79,18 @@ pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
     bullet::draw(ctx, mygame);
     enemy::draw(ctx, mygame);
     player::draw(ctx, mygame);
+
+    draw_score(ctx, mygame);
+}
+
+fn draw_score(ctx: &mut Context, mygame: &mut MyGame) {
+    let font = mygame.assets.font;
+    let mut text = graphics::Text::new(format!("HP: {} SCORE: {}", mygame.player1.life, mygame.score));
+
+    let dst: Point2<f32> = Point2::new(20.0, 20.0);
+    let param = graphics::DrawParam::new()
+        .dest(dst)
+        .color(graphics::WHITE);
+
+    graphics::draw(ctx, text.set_font(font, graphics::Scale{x: 23.0, y: 23.0}), param).unwrap();
 }

@@ -19,7 +19,6 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
         let point = input::mouse::position(ctx);
 
         if point.x > X && point.x < X + W && point.y > Y && point.y < Y + H {
-            println!("{:?}", point);
             mygame.game_state = GameState::GAME;
         }
 

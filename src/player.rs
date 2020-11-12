@@ -7,7 +7,7 @@ use crate::mygame::{MyGame};
 
 use cgmath::{Point2};
 
-pub const RELOAD_TIME: f32 = 0.4;
+pub const RELOAD_TIME: f32 = 0.3;
 
 #[derive(PartialEq)]
 pub enum Door {
@@ -28,12 +28,12 @@ pub struct Player {
 	pub life: i32
 }
 
-// Draws a rectangle.
+// Draws player.
 pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
 	let dst: Point2<f32> = Point2::new(mygame.player1.x_pos, mygame.player1.y_pos);
 	
 	let scale = {
-		let wh = 30.0;
+		let wh = 30.0; // size of image. do not change.
 		let scale_f = mygame.player1.width / wh;
 		[scale_f, scale_f]
 	};

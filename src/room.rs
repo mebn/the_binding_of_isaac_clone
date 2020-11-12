@@ -32,7 +32,7 @@ impl Room {
         Room {
             room_number,
             is_finished: false,
-            num_of_enemies: rng.gen_range(1, 10),
+            num_of_enemies: rng.gen_range(1, 14),
             background_index: rand_num
         }
     }

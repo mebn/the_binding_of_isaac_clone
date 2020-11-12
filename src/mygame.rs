@@ -48,12 +48,12 @@ pub fn new_game(ctx: &mut Context, game_state: GameState) -> MyGame {
     let player1 = Player {
         x_pos: window::WIDTH / 2.0,
         y_pos: window::HEIGHT / 2.0,
-        width: 60.0,
-        height: 60.0,
+        width: 50.0,
+        height: 50.0,
         speed: 7.0,
         reload_time: player::RELOAD_TIME,
         current_room: map::PLAYER_SPAWN,
-        life: 6
+        life: 10
     };
 
     MyGame {

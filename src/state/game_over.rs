@@ -54,7 +54,7 @@ fn draw_score(ctx: &mut Context, mygame: &mut MyGame) {
     let scores: Vec<&str> = contents.split(',').collect();
 
     let font = mygame.assets.font;
-    let mut text = graphics::Text::new(format!("{}", scores[scores.len() - 1])); // -2 to skip whiteline
+    let mut text = graphics::Text::new(format!("{}", scores[scores.len() - 1]));
 
     let dst: Point2<f32> = Point2::new(540.0, 205.0);
     let param = graphics::DrawParam::new()

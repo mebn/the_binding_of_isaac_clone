@@ -27,10 +27,10 @@ pub fn update_pos(enemy_vec: &mut Vec<Enemy>, player: &Player) {
 }
 
 pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> {
-    const OFFSET: f32 = 200.0;
+    const OFFSET: f32 = 250.0; // min distance from player to spawn at.
     let mut rng = rand::thread_rng();
     let mut temp_vec = Vec::new();
-    let size = 50.0;
+    let size = 40.0;
 
     for _ in 0..how_many {
         let temp = Enemy {
@@ -38,7 +38,7 @@ pub fn spawn_enemies(how_many: u32, player_x: f32, player_y: f32) -> Vec<Enemy> 
             y_pos: spawn_point(OFFSET, player_y, window::HEIGHT, size),
             width: size,
             height: size,
-            speed: rng.gen_range(1.0, 4.0),
+            speed: rng.gen_range(1.0, 5.0),
             is_alive: true
         };
 
@@ -53,7 +53,7 @@ pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
         let dst: Point2<f32> = Point2::new(enemy.x_pos, enemy.y_pos);
 	
         let scale = {
-            let wh = 30.0;
+            let wh = 30.0; // size of image. do not change.
             let scale_f = enemy.width / wh;
             [scale_f, scale_f]
         };
@@ -87,7 +87,6 @@ pub fn enemy_hit_player(enemy_vec: &mut Vec<Enemy>, player: &mut Player) {
             enemy.y_pos + enemy.height > player.y_pos {
                 player.life -= 1;
                 enemy.is_alive = false;
-                println!("{}", player.life);
         }
     }
 }
