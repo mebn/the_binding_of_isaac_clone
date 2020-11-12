@@ -1,6 +1,9 @@
 use ggez::{Context};
 use ggez::timer;
 
+use std::fs::OpenOptions;
+use std::io::prelude::*;
+
 use crate::{mygame, player, bullet, enemy, room};
 use mygame::{MyGame, GameState, new_game};
 
@@ -18,9 +21,22 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
 
     // GAME OVER!
     if !mygame.player1.player_still_alive() {
-        println!("SCORE: {}", mygame.score);
+        let mut file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open("src/scores")
+            .unwrap();
+
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).unwrap();
+
+        if contents.is_empty() {
+            file.write(b"0").unwrap();
+        }
+        
+        file.write(format!(",{}", mygame.score).as_bytes()).unwrap();
+
         *mygame = new_game(ctx, GameState::GAMEOVER);
-        mygame.game_state = GameState::GAMEOVER;
     }
     player::enter_new_room(mygame);
 
