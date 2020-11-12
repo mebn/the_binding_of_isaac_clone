@@ -19,3 +19,10 @@ Utveckling under de 2 veckorna.
 
 ## Info
 `./_regular` är bara regular uppgiften och har ingeting med mitt spel att göra.
+
+## How to
+### Starta spelet
+Starta spelet genom att antingen köra `RUN.sh` eller `cargo run --release`. 
+
+### In-game
+`w a s d` för att röra sig. Piltangenterna för att skjuta.
