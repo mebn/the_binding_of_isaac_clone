@@ -9,11 +9,15 @@ use crate::{mygame, player, bullet, enemy, room};
 use mygame::{MyGame, GameState, new_game};
 
 pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
+    let (row, col) = mygame.player1.current_room;
     // Handle cooldown when shooting bullets.
     const DESIRED_FPS: u32 = 60;
     while timer::check_update_time(ctx, DESIRED_FPS) {
         let seconds = 1.0 / (DESIRED_FPS as f32);
         mygame.player1.reload_time -= seconds;
+        if !mygame.rooms[row][col].is_finished {
+            mygame.time_left -= seconds;
+        }
     }
 
     // Handle movement for player1.
@@ -21,7 +25,7 @@ pub fn update(ctx: &mut Context, mygame: &mut MyGame) {
     mygame.player1.no_wall_hax();
 
     // GAME OVER!
-    if !mygame.player1.player_still_alive() {
+    if !mygame.player1.player_still_alive() || mygame.no_time_left() {
         let mut file = OpenOptions::new()
             .read(true)
             .write(true)
@@ -85,7 +89,8 @@ pub fn draw(ctx: &mut Context, mygame: &mut MyGame) {
 
 fn draw_score(ctx: &mut Context, mygame: &mut MyGame) {
     let font = mygame.assets.font;
-    let mut text = graphics::Text::new(format!("HP: {} SCORE: {}", mygame.player1.life, mygame.score));
+    let mut text = graphics::Text::new(format!("HP: {}\nSCORE: {} \nTIME LEFT: {:.0}",
+        mygame.player1.life, mygame.score, mygame.time_left));
 
     let dst: Point2<f32> = Point2::new(20.0, 20.0);
     let param = graphics::DrawParam::new()

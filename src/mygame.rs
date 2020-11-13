@@ -9,6 +9,8 @@ use crate::assets::{Assets};
 use crate::map;
 use crate::window;
 
+const TIME_LEFT: f32 = 8.0;
+
 
 #[derive(PartialEq)]
 pub enum GameState {
@@ -25,7 +27,8 @@ pub struct MyGame {
 	pub rooms: Vec<Vec<Room>>,
 	pub map: Vec<Vec<bool>>,
     pub assets: Assets,
-    pub score: u32
+    pub score: u32,
+    pub time_left: f32,
 }
 
 pub fn new_game(ctx: &mut Context, game_state: GameState) -> MyGame {
@@ -64,6 +67,17 @@ pub fn new_game(ctx: &mut Context, game_state: GameState) -> MyGame {
         rooms,
         map: map::generate_map(),
         assets,
-        score: 0
+        score: 0,
+        time_left: TIME_LEFT,
+    }
+}
+
+impl MyGame {
+    pub fn no_time_left(&self) -> bool {
+        self.time_left < 0.0
+    }
+
+    pub fn reset_time(&mut self) {
+        self.time_left = TIME_LEFT;
     }
 }

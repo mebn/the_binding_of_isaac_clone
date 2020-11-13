@@ -160,6 +160,9 @@ pub fn enter_new_room(mygame: &mut MyGame) {
 
 		for (index, val) in doors_on_side.iter().enumerate() {
 			if possible_rooms[index] && mygame.player1.is_at_door(val) {
+				// reset time
+				mygame.reset_time();
+				
 				go_through_door(&mut mygame.player1, val);
 				handle_player_door_movement(mygame);
 			}
