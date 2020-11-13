@@ -15,7 +15,14 @@ Utveckling under de 2 veckorna.
 * säkert fler saker som jag inte kommer på nu.
 
 ### 13/11-20 (två veckor efter vi fick uppgiften)
-
+[Här](https://youtu.be/RRVNMzsyr48) finns en video på hur spelet ser ut och fungerar efter två veckor. Det som är nytt är:
+* fler bakgrunder på rummen
+* start meny
+* game over skärm
+* tidsbegränsning i rummen
+* hp, score och tid kvar in game
+* high score lista i game menu
+* säker mer.
 
 ## Info
 `./_regular` är bara regular uppgiften och har ingeting med mitt spel att göra.
